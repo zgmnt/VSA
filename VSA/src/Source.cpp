@@ -4,6 +4,7 @@
 int main()
 {
     Window window(1250,750);
+    window.prepareMenuContents();
 
     while (Window::getWindow()->isOpen())
     {
@@ -14,8 +15,11 @@ int main()
                 Window::getWindow()->close();
         }
 
-        Window::getWindow()->clear();
-        Window::getWindow()->display();
+        window.clearSelf();
+        window.drawMenu();
+        window.drawSelf();
+
+
     }
 
     return 0;
