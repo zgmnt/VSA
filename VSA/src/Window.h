@@ -20,8 +20,12 @@ class Window
 	static std::vector<sf::Text> _algorithm_names;
 	static int framesPositionsX[6];
 	static int framesPositionsY[6];
+	static int background_change_direction;
 
 	sf::RectangleShape _square_frame;
+
+	sf::Sprite menu_background_sprite;
+	sf::Texture menu_background_texture;
 
 	// private functions
 
@@ -57,11 +61,21 @@ public:
 
 
 	}
+	void prepareBackground()
+	{
+		menu_background_texture.loadFromFile("img\\menu_background.png");
+		menu_background_sprite = sf::Sprite(menu_background_texture);
+	}
 	void prepareMenuContents()
 	{
 		prepareTexts();
+		prepareBackground();
 		_square_frame.setFillColor(sf::Color::Red);
 		_square_frame.setSize(sf::Vector2f(_frame_width, _frame_height));
+	}
+	void drawMenuBackground()
+	{
+		_window->draw(menu_background_sprite);
 	}
 	void fillFramesPos()
 	{
@@ -126,9 +140,28 @@ public:
 	}
 	void drawMenu()
 	{
+		drawMenuBackground();
 		prepareFramesForEachAlgorithms();
 		drawMenuTexts();
 		frameScaleChanger();
+		transition();
+
+	}
+	void transition()
+	{
+		// background movement //
+		if (menu_background_sprite.getPosition().x > -730 && !background_change_direction)
+			menu_background_sprite.setPosition(menu_background_sprite.getPosition().x - 2, -340);
+		else
+			background_change_direction = true;
+
+		if (background_change_direction)
+		{
+			if (menu_background_sprite.getPosition().x > -230)
+				background_change_direction = 0;
+
+			menu_background_sprite.setPosition(menu_background_sprite.getPosition().x + 2, -340);
+		}
 	}
 	void frameScaleChanger()
 	{

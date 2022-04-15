@@ -11,3 +11,4 @@ std::vector<sf::Text> Window::_algorithm_names;
 sf::Text Window::_algorithm_name;
 int Window::framesPositionsX[6];
 int Window::framesPositionsY[6];
+int Window::background_change_direction{ false };
