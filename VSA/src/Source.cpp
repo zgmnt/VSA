@@ -5,6 +5,7 @@ int main()
 {
     Window window(1250,750);
     window.prepareMenuContents();
+    
 
     while (Window::getWindow()->isOpen())
     {
