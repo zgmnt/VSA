@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <utility>
+#include <Windows.h>
 
 
 class Window
@@ -92,32 +93,57 @@ public:
 	void prepareFramesForEachAlgorithms()
 	{
 		fillFramesPos();
+
 		// upper line
 		_square_frame.setPosition(framesPositionsX[0], framesPositionsY[0]);
 		_window->draw(_square_frame);
+		frameScaleChanger();
 
+		_window->draw(_square_frame);
 		_square_frame.setPosition(framesPositionsX[1], framesPositionsY[1]);
-		_window->draw(_square_frame);
+		frameScaleChanger();
 
-		_square_frame.setPosition(framesPositionsX[2], framesPositionsY[2]);
 		_window->draw(_square_frame);
+		_square_frame.setPosition(framesPositionsX[2], framesPositionsY[2]);
+		frameScaleChanger();
 
 		// lower line
+		_window->draw(_square_frame);
 		_square_frame.setPosition(framesPositionsX[3], framesPositionsY[3]);
-		_window->draw(_square_frame);
+		frameScaleChanger();
 
+		_window->draw(_square_frame);
 		_square_frame.setPosition(framesPositionsX[4], framesPositionsY[4]);
-		_window->draw(_square_frame);
+		frameScaleChanger();
 
-		_square_frame.setPosition(framesPositionsX[5], framesPositionsY[5]);
 		_window->draw(_square_frame);
+		_square_frame.setPosition(framesPositionsX[5], framesPositionsY[5]);
+		frameScaleChanger();
+
+		_window->draw(_square_frame);
+		_square_frame.setPosition(framesPositionsX[6], framesPositionsY[6]);
+		frameScaleChanger();
 	}
 	void drawMenu()
 	{
 		prepareFramesForEachAlgorithms();
 		drawMenuTexts();
+		frameScaleChanger();
 	}
+	void frameScaleChanger()
+	{
+		if (_square_frame.getGlobalBounds().contains((*_window).mapPixelToCoords(sf::Mouse::getPosition(*_window))))
+		{
 
+			_square_frame.setOrigin(10, 8);
+			_square_frame.setScale(1.1, 1.1);
+		}
+		else
+		{
+			_square_frame.setOrigin(0, 0);
+			_square_frame.setScale(1, 1);
+		}
+	}
 	static sf::RenderWindow* getWindow()
 	{
 		if (_window == NULL)
