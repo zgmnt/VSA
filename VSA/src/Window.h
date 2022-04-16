@@ -18,8 +18,7 @@ class Window
 	static sf::Font menu_font;
 	static sf::Text _algorithm_name;
 	static std::vector<sf::Text> _algorithm_names;
-	static int framesPositionsX[6];
-	static int framesPositionsY[6];
+	static std::vector<std::pair<int, int>> framesPos;
 	static int background_change_direction;
 
 	sf::RectangleShape _square_frame;
@@ -29,15 +28,6 @@ class Window
 
 	// private functions
 
-
-public:
-	Window(int width, int height) 
-	{ 
-		_width = width, _height = height; 
-	}
-
-	void drawSelf() { _window->display(); }
-	void clearSelf() { _window->clear(sf::Color::Blue); }
 	void prepareTexts()
 	{
 		menu_font.loadFromFile("fonts\\mrsmonster.ttf");
@@ -66,10 +56,24 @@ public:
 		menu_background_texture.loadFromFile("img\\menu_background.png");
 		menu_background_sprite = sf::Sprite(menu_background_texture);
 	}
-	void prepareMenuContents()
+	void fillFramesPos()
 	{
-		prepareTexts();
-		prepareBackground();
+		std::pair<int, int > pos1 = std::make_pair(50, 83);
+		std::pair<int, int > pos2 = std::make_pair(450, 83);
+		std::pair<int, int > pos3 = std::make_pair(850, 83);
+		std::pair<int, int > pos4 = std::make_pair(50, 416);
+		std::pair<int, int > pos5 = std::make_pair(450, 416);
+		std::pair<int, int > pos6 = std::make_pair(850, 416);
+
+		framesPos.push_back(pos1);
+		framesPos.push_back(pos2);
+		framesPos.push_back(pos3);
+		framesPos.push_back(pos4);
+		framesPos.push_back(pos5);
+		framesPos.push_back(pos6);
+	}
+	void prepareFrame()
+	{
 		_square_frame.setFillColor(sf::Color::Red);
 		_square_frame.setSize(sf::Vector2f(_frame_width, _frame_height));
 	}
@@ -77,77 +81,24 @@ public:
 	{
 		_window->draw(menu_background_sprite);
 	}
-	void fillFramesPos()
-	{
-		// X
-		framesPositionsX[0] = 50;
-		framesPositionsX[1] = 450;
-		framesPositionsX[2] = 850;
-		framesPositionsX[3] = 50;
-		framesPositionsX[4] = 450;
-		framesPositionsX[5] = 850;
-
-		// Y
-		framesPositionsY[0] = 83;
-		framesPositionsY[1] = 83;
-		framesPositionsY[2] = 83;
-		framesPositionsY[3] = 416;
-		framesPositionsY[4] = 416;
-		framesPositionsY[5] = 416;
-	}
 	void drawMenuTexts()
 	{
-
-		for (int i = 0; i<_algorithm_names.size(); i++)
+		for (int i = 0; i < _algorithm_names.size(); i++)
 		{
-			_algorithm_names[i].setPosition(framesPositionsX[i] + 40, framesPositionsY[i]+ 100);
+			_algorithm_names[i].setPosition(framesPos[i].first + 40, framesPos[i].second + 100);
 			_window->draw(_algorithm_names[i]);
 		}
 	}
-	void prepareFramesForEachAlgorithms()
+	void drawHoverFrames()
 	{
-		fillFramesPos();
-
-		// upper line
-		_square_frame.setPosition(framesPositionsX[0], framesPositionsY[0]);
-		_window->draw(_square_frame);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[1], framesPositionsY[1]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[2], framesPositionsY[2]);
-		frameScaleChanger();
-
-		// lower line
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[3], framesPositionsY[3]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[4], framesPositionsY[4]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[5], framesPositionsY[5]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[6], framesPositionsY[6]);
-		frameScaleChanger();
+		for (int i = 0; i < _algorithm_names.size(); i++)
+		{
+			_square_frame.setPosition(framesPos[i].first, framesPos[i].second);
+			frameScaleChanger();
+			drawFrames();
+		}
 	}
-	void drawMenu()
-	{
-		drawMenuBackground();
-		prepareFramesForEachAlgorithms();
-		drawMenuTexts();
-		frameScaleChanger();
-		transition();
-
-	}
-	void transition()
+	void menuTransition()
 	{
 		// background movement //
 		if (menu_background_sprite.getPosition().x > -730 && !background_change_direction)
@@ -163,6 +114,7 @@ public:
 			menu_background_sprite.setPosition(menu_background_sprite.getPosition().x + 2, -340);
 		}
 	}
+	void drawFrames() {_window->draw(_square_frame);}
 	void frameScaleChanger()
 	{
 		if (_square_frame.getGlobalBounds().contains((*_window).mapPixelToCoords(sf::Mouse::getPosition(*_window))))
@@ -177,6 +129,12 @@ public:
 			_square_frame.setScale(1, 1);
 		}
 	}
+
+public:
+	Window(int width, int height) 
+	{ 
+		_width = width, _height = height; 
+	}
 	static sf::RenderWindow* getWindow()
 	{
 		if (_window == NULL)
@@ -186,5 +144,24 @@ public:
 
 		return _window;
 	}
+	void prepareMenuContents()
+	{
+		fillFramesPos();
+		prepareTexts();
+		prepareBackground();
+		prepareFrame();
+	}
+	void updateMenu()
+	{
 
+		menuTransition();
+	}
+	void drawMenu()
+	{
+		drawMenuBackground();
+		drawHoverFrames();
+		drawMenuTexts();
+	}
+	void clearSelf() { _window->clear(sf::Color::Blue); }
+	void drawSelf() { _window->display(); }
 };

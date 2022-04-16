@@ -9,6 +9,5 @@ int Window::_frame_height{ 250 };
 sf::Font Window::menu_font;
 std::vector<sf::Text> Window::_algorithm_names;
 sf::Text Window::_algorithm_name;
-int Window::framesPositionsX[6];
-int Window::framesPositionsY[6];
 int Window::background_change_direction{ false };
+std::vector<std::pair<int, int>> Window::framesPos;
