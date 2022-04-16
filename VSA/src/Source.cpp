@@ -4,8 +4,9 @@
 int main()
 {
     Window window(1250,750);
-    window.prepareMenuContents();
     Window::getWindow()->setFramerateLimit(25);
+
+    window.prepareMenuContents();
 
     while (Window::getWindow()->isOpen())
     {
@@ -17,10 +18,10 @@ int main()
         }
 
         window.clearSelf();
+        window.updateMenu();
         window.drawMenu();
+
         window.drawSelf();
-
-
     }
 
     return 0;
