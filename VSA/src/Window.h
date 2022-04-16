@@ -39,6 +39,9 @@ class Window
 
 	static bool menu_active;
 
+	sf::Font algorithms_font;
+	sf::Text algorithm_name_text;
+
 	// private functions
 
 	//
@@ -58,6 +61,7 @@ class Window
 	void prepareTexts()
 	{
 		menu_font.loadFromFile("fonts\\mrsmonster.ttf");
+		algorithms_font.loadFromFile("fonts\\mrsmonster.ttf");
 		_algorithm_name.setFont(menu_font);
 		_algorithm_name.setCharacterSize(50);
 		_algorithm_name.setPosition(100, 100);
@@ -76,6 +80,9 @@ class Window
 		_algorithm_name.setString("counting sort");
 		_algorithm_names.push_back(_algorithm_name);
 
+		algorithm_name_text.setFont(algorithms_font);
+		algorithm_name_text.setCharacterSize(30);
+		algorithm_name_text.setFillColor(sf::Color::Yellow);
 
 	}
 	void prepareBackground()
@@ -153,12 +160,16 @@ class Window
 			selectionSort();
 			break;
 		case Algorithms::insertion_sort:
+			insertionSort();
 			break;
 		case Algorithms::quick_sort:
+			quickSort();
 			break;
 		case Algorithms::merge_sort:
+			mergeSort();
 			break;
 		case Algorithms::counting_sort:
+			countingSort();
 			break;
 		}
 	}
@@ -186,11 +197,33 @@ class Window
 	}
 	void bubbleSort()
 	{
-		drawStrap();
+		algorithm_name_text.setString("Bubble Sort");
+		_window->draw(algorithm_name_text);
 	}
 	void selectionSort()
 	{
-		drawStrap();
+		algorithm_name_text.setString("Selection Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void insertionSort()
+	{
+		algorithm_name_text.setString("Insertion Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void quickSort()
+	{
+		algorithm_name_text.setString("Quick Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void mergeSort()
+	{
+		algorithm_name_text.setString("Merge Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void countingSort()
+	{
+		algorithm_name_text.setString("Counting Sort");
+		_window->draw(algorithm_name_text);
 	}
 
 public:
@@ -211,7 +244,7 @@ public:
 	{
 		prepareStrap(sf::Color::Yellow, sf::Vector2f(10, 200));
 	}
-	void prepareMenuContents()
+	void prepareContents()
 	{
 		fillFramesPos();
 		prepareTexts();
@@ -239,8 +272,6 @@ public:
 		{
 			selectorAlgorithm();
 		}
-		std::cout<< int(active_algorithm) << "\n";
-
 	}
 	void clearSelf() { _window->clear(sf::Color::Blue); }
 	void drawSelf() { _window->display(); }

@@ -6,7 +6,7 @@ int main()
     Window window(1250,750);
     Window::getWindow()->setFramerateLimit(25);
 
-    window.prepareMenuContents();
+    window.prepareContents();
     window.prepareAlgorithmsContents();
 
     while (Window::getWindow()->isOpen())
