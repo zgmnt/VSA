@@ -42,6 +42,7 @@ class Window
 	sf::Texture menu_background_texture;
 
 	static bool menu_active;
+	static bool sorted;
 
 	sf::Font algorithms_font;
 	sf::Text algorithm_name_text;
@@ -149,24 +150,32 @@ class Window
 		switch (active_algorithm)
 		{
 		case Algorithms::bubble_sort:
+			algorithm_name_text.setString("Bubble Sort");
 			bubbleSort();
 			break;
 		case Algorithms::selection_sort:
-			selectionSort();
+			algorithm_name_text.setString("Selection Sort");
+			//selectionSort();
 			break;
 		case Algorithms::insertion_sort:
-			insertionSort();
+			algorithm_name_text.setString("Insertion Sort");
+			//insertionSort();
 			break;
 		case Algorithms::quick_sort:
-			quickSort();
+			algorithm_name_text.setString("Quick Sort");
+			//quickSort();
 			break;
 		case Algorithms::merge_sort:
-			mergeSort();
+			algorithm_name_text.setString("Merge Sort");
+			//mergeSort();
 			break;
 		case Algorithms::counting_sort:
-			countingSort();
+			algorithm_name_text.setString("Counting Sort");
+			//countingSort();
 			break;
 		}
+		_window->draw(algorithm_name_text);
+		drawStraps();
 	}
 	void frameChanger(Algorithms algorithm_name)
 	{
@@ -216,47 +225,27 @@ class Window
 	}
 	void bubbleSort()
 	{
-		algorithm_name_text.setString("Bubble Sort");
-		_window->draw(algorithm_name_text);
-		drawStraps();
-
+		
+		std::cout << sorted << std::endl;
 
 		std::pair<int, int> pos;
-		for (int i = 0; i < straps_amount-1; i++)
+
+		for (int i = 0; i < straps_amount - 1; i++)
 		{
 			if (strapsSizes[i].second < strapsSizes[i + 1].second)
 			{
+				sorted = false;
 				pos = strapsSizes[i];
 				strapsSizes[i] = strapsSizes[i + 1];
 				strapsSizes[i + 1] = pos;
+
+			}
+			else
+			{
+				sorted = true;
 			}
 		}
-		
-	}
-	void selectionSort()
-	{
-		algorithm_name_text.setString("Selection Sort");
-		_window->draw(algorithm_name_text);
-	}
-	void insertionSort()
-	{
-		algorithm_name_text.setString("Insertion Sort");
-		_window->draw(algorithm_name_text);
-	}
-	void quickSort()
-	{
-		algorithm_name_text.setString("Quick Sort");
-		_window->draw(algorithm_name_text);
-	}
-	void mergeSort()
-	{
-		algorithm_name_text.setString("Merge Sort");
-		_window->draw(algorithm_name_text);
-	}
-	void countingSort()
-	{
-		algorithm_name_text.setString("Counting Sort");
-		_window->draw(algorithm_name_text);
+
 	}
 
 public:

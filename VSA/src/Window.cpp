@@ -14,6 +14,7 @@ std::vector<std::pair<int, int>> Window::framesPos;
 std::vector<std::pair<int, int>> Window::strapsPos;
 std::vector<std::pair<int, int>> Window::strapsSizes;
 bool Window::menu_active{ true };
+bool Window::sorted{ false };
 Algorithms Window::active_algorithm{Algorithms::bubble_sort};
 unsigned int Window::straps_amount{ 83 };
 unsigned int Window::straps_width{ 12 };
