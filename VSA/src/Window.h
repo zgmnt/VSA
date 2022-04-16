@@ -5,9 +5,20 @@
 #include <utility>
 #include <Windows.h>
 
+enum class Algorithms
+{
+	bubble_sort, selection_sort, insertion_sort, quick_sort, merge_sort, counting_sort
+};
 
 class Window
 {
+	//
+
+	sf::RectangleShape strap;
+	static Algorithms active_algorithm;
+
+	//
+
 	static sf::RenderWindow* _window;
 	static int _width;
 	static int _height;
@@ -26,11 +37,31 @@ class Window
 	sf::Sprite menu_background_sprite;
 	sf::Texture menu_background_texture;
 
+	static bool menu_active;
+
+	sf::Font algorithms_font;
+	sf::Text algorithm_name_text;
+
 	// private functions
+
+	//
+
+	void prepareStrap(sf::Color color, sf::Vector2f size)
+	{
+		strap.setFillColor(color);
+		strap.setSize(size);
+	}
+	void drawStrap()
+	{
+		_window->draw(strap);
+	}
+
+	//
 
 	void prepareTexts()
 	{
 		menu_font.loadFromFile("fonts\\mrsmonster.ttf");
+		algorithms_font.loadFromFile("fonts\\mrsmonster.ttf");
 		_algorithm_name.setFont(menu_font);
 		_algorithm_name.setCharacterSize(50);
 		_algorithm_name.setPosition(100, 100);
@@ -49,6 +80,9 @@ class Window
 		_algorithm_name.setString("counting sort");
 		_algorithm_names.push_back(_algorithm_name);
 
+		algorithm_name_text.setFont(algorithms_font);
+		algorithm_name_text.setCharacterSize(30);
+		algorithm_name_text.setFillColor(sf::Color::Yellow);
 
 	}
 	void prepareBackground()
@@ -94,7 +128,7 @@ class Window
 		for (int i = 0; i < _algorithm_names.size(); i++)
 		{
 			_square_frame.setPosition(framesPos[i].first, framesPos[i].second);
-			frameScaleChanger();
+			frameChanger(Algorithms(i));
 			drawFrames();
 		}
 	}
@@ -115,19 +149,81 @@ class Window
 		}
 	}
 	void drawFrames() {_window->draw(_square_frame);}
-	void frameScaleChanger()
+	void selectorAlgorithm()
+	{
+		switch (active_algorithm)
+		{
+		case Algorithms::bubble_sort:
+			bubbleSort();
+			break;
+		case Algorithms::selection_sort:
+			selectionSort();
+			break;
+		case Algorithms::insertion_sort:
+			insertionSort();
+			break;
+		case Algorithms::quick_sort:
+			quickSort();
+			break;
+		case Algorithms::merge_sort:
+			mergeSort();
+			break;
+		case Algorithms::counting_sort:
+			countingSort();
+			break;
+		}
+	}
+	void frameChanger(Algorithms algorithm_name)
 	{
 		if (_square_frame.getGlobalBounds().contains((*_window).mapPixelToCoords(sf::Mouse::getPosition(*_window))))
 		{
 
 			_square_frame.setOrigin(10, 8);
 			_square_frame.setScale(1.1, 1.1);
+
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				Sleep(150);
+				active_algorithm = algorithm_name;
+				menu_active = false;
+			}
 		}
 		else
 		{
 			_square_frame.setOrigin(0, 0);
 			_square_frame.setScale(1, 1);
 		}
+	}
+	void bubbleSort()
+	{
+		algorithm_name_text.setString("Bubble Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void selectionSort()
+	{
+		algorithm_name_text.setString("Selection Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void insertionSort()
+	{
+		algorithm_name_text.setString("Insertion Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void quickSort()
+	{
+		algorithm_name_text.setString("Quick Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void mergeSort()
+	{
+		algorithm_name_text.setString("Merge Sort");
+		_window->draw(algorithm_name_text);
+	}
+	void countingSort()
+	{
+		algorithm_name_text.setString("Counting Sort");
+		_window->draw(algorithm_name_text);
 	}
 
 public:
@@ -144,7 +240,11 @@ public:
 
 		return _window;
 	}
-	void prepareMenuContents()
+	void prepareAlgorithmsContents()
+	{
+		prepareStrap(sf::Color::Yellow, sf::Vector2f(10, 200));
+	}
+	void prepareContents()
 	{
 		fillFramesPos();
 		prepareTexts();
@@ -161,6 +261,17 @@ public:
 		drawMenuBackground();
 		drawHoverFrames();
 		drawMenuTexts();
+	}
+	void draw()
+	{
+		if (menu_active)
+		{
+			drawMenu();
+		}
+		else
+		{
+			selectorAlgorithm();
+		}
 	}
 	void clearSelf() { _window->clear(sf::Color::Blue); }
 	void drawSelf() { _window->display(); }
