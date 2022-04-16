@@ -18,8 +18,7 @@ class Window
 	static sf::Font menu_font;
 	static sf::Text _algorithm_name;
 	static std::vector<sf::Text> _algorithm_names;
-	static int framesPositionsX[6];
-	static int framesPositionsY[6];
+	static std::vector<std::pair<int, int>> framesPos;
 	static int background_change_direction;
 
 	sf::RectangleShape _square_frame;
@@ -80,28 +79,26 @@ public:
 	}
 	void fillFramesPos()
 	{
-		// X
-		framesPositionsX[0] = 50;
-		framesPositionsX[1] = 450;
-		framesPositionsX[2] = 850;
-		framesPositionsX[3] = 50;
-		framesPositionsX[4] = 450;
-		framesPositionsX[5] = 850;
+		std::pair<int, int > pos1 = std::make_pair(50, 83);
+		std::pair<int, int > pos2 = std::make_pair(450, 83);
+		std::pair<int, int > pos3 = std::make_pair(850, 83);
+		std::pair<int, int > pos4 = std::make_pair(50, 416);
+		std::pair<int, int > pos5 = std::make_pair(450, 416);
+		std::pair<int, int > pos6 = std::make_pair(850, 416);
 
-		// Y
-		framesPositionsY[0] = 83;
-		framesPositionsY[1] = 83;
-		framesPositionsY[2] = 83;
-		framesPositionsY[3] = 416;
-		framesPositionsY[4] = 416;
-		framesPositionsY[5] = 416;
+		framesPos.push_back(pos1);
+		framesPos.push_back(pos2);
+		framesPos.push_back(pos3);
+		framesPos.push_back(pos4);
+		framesPos.push_back(pos5);
+		framesPos.push_back(pos6);
 	}
 	void drawMenuTexts()
 	{
 
 		for (int i = 0; i<_algorithm_names.size(); i++)
 		{
-			_algorithm_names[i].setPosition(framesPositionsX[i] + 40, framesPositionsY[i]+ 100);
+			_algorithm_names[i].setPosition(framesPos[i].first + 40, framesPos[i].second+ 100);
 			_window->draw(_algorithm_names[i]);
 		}
 	}
@@ -109,7 +106,7 @@ public:
 	{
 		for (int i = 0; i<_algorithm_names.size(); i++)
 		{
-			_square_frame.setPosition(framesPositionsX[i], framesPositionsY[i]);
+			_square_frame.setPosition(framesPos[i].first, framesPos[i].second);
 			frameScaleChanger();
 			_window->draw(_square_frame);
 		}
