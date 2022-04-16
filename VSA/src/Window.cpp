@@ -12,3 +12,4 @@ sf::Text Window::_algorithm_name;
 int Window::background_change_direction{ false };
 std::vector<std::pair<int, int>> Window::framesPos;
 bool Window::menu_active{ true };
+Algorithms Window::active_algorithm{Algorithms::bubble_sort};

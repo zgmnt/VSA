@@ -15,6 +15,7 @@ class Window
 	//
 
 	sf::RectangleShape strap;
+	static Algorithms active_algorithm;
 
 	//
 
@@ -141,33 +142,25 @@ class Window
 		}
 	}
 	void drawFrames() {_window->draw(_square_frame);}
-	void selectorAlgorithm(Algorithms algorithm_name)
+	void selectorAlgorithm()
 	{
-		switch (algorithm_name)
+		switch (active_algorithm)
 		{
 		case Algorithms::bubble_sort:
 			bubbleSort();
-			menu_active = false;
 			break;
 		case Algorithms::selection_sort:
-			std::cout << "selection sort\n";
+			selectionSort();
 			break;
 		case Algorithms::insertion_sort:
-			std::cout << "insertion sort\n";
 			break;
 		case Algorithms::quick_sort:
-			std::cout << "quick sort\n";
 			break;
 		case Algorithms::merge_sort:
-			std::cout << "merge sort\n";
 			break;
 		case Algorithms::counting_sort:
-			std::cout << "counting sort\n";
 			break;
 		}
-
-		std::cout << menu_active << "\n";
-		//menu_active = true;
 	}
 	void frameChanger(Algorithms algorithm_name)
 	{
@@ -181,7 +174,8 @@ class Window
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
 				Sleep(150);
-				selectorAlgorithm(algorithm_name);
+				active_algorithm = algorithm_name;
+				menu_active = false;
 			}
 		}
 		else
@@ -192,8 +186,10 @@ class Window
 	}
 	void bubbleSort()
 	{
-		_window->clear();
-		prepareStrap(sf::Color::Yellow, sf::Vector2f(10,200));
+		drawStrap();
+	}
+	void selectionSort()
+	{
 		drawStrap();
 	}
 
@@ -210,6 +206,10 @@ public:
 		}
 
 		return _window;
+	}
+	void prepareAlgorithmsContents()
+	{
+		prepareStrap(sf::Color::Yellow, sf::Vector2f(10, 200));
 	}
 	void prepareMenuContents()
 	{
@@ -235,6 +235,12 @@ public:
 		{
 			drawMenu();
 		}
+		else
+		{
+			selectorAlgorithm();
+		}
+		std::cout<< int(active_algorithm) << "\n";
+
 	}
 	void clearSelf() { _window->clear(sf::Color::Blue); }
 	void drawSelf() { _window->display(); }
