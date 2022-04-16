@@ -5,6 +5,10 @@
 #include <utility>
 #include <Windows.h>
 
+enum class Algorithms
+{
+	bubble_sort, selection_sort, insertion_sort, quick_sort, merge_sort, counting_sort
+};
 
 class Window
 {
@@ -94,7 +98,7 @@ class Window
 		for (int i = 0; i < _algorithm_names.size(); i++)
 		{
 			_square_frame.setPosition(framesPos[i].first, framesPos[i].second);
-			frameScaleChanger();
+			frameChanger(Algorithms(i));
 			drawFrames();
 		}
 	}
@@ -115,13 +119,44 @@ class Window
 		}
 	}
 	void drawFrames() {_window->draw(_square_frame);}
-	void frameScaleChanger()
+	void selectorAlgorithm(Algorithms algorithm_name)
+	{
+		switch (algorithm_name)
+		{
+		case Algorithms::bubble_sort:
+			std::cout << "bubble sort\n";
+			break;
+		case Algorithms::selection_sort:
+			std::cout << "selection sort\n";
+			break;
+		case Algorithms::insertion_sort:
+			std::cout << "insertion sort\n";
+			break;
+		case Algorithms::quick_sort:
+			std::cout << "quick sort\n";
+			break;
+		case Algorithms::merge_sort:
+			std::cout << "merge sort\n";
+			break;
+		case Algorithms::counting_sort:
+			std::cout << "counting sort\n";
+			break;
+		}
+	}
+	void frameChanger(Algorithms algorithm_name)
 	{
 		if (_square_frame.getGlobalBounds().contains((*_window).mapPixelToCoords(sf::Mouse::getPosition(*_window))))
 		{
 
 			_square_frame.setOrigin(10, 8);
 			_square_frame.setScale(1.1, 1.1);
+
+
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				Sleep(150);
+				selectorAlgorithm(algorithm_name);
+			}
 		}
 		else
 		{
