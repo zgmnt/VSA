@@ -12,6 +12,12 @@ enum class Algorithms
 
 class Window
 {
+	//
+
+	sf::RectangleShape strap;
+
+	//
+
 	static sf::RenderWindow* _window;
 	static int _width;
 	static int _height;
@@ -30,7 +36,23 @@ class Window
 	sf::Sprite menu_background_sprite;
 	sf::Texture menu_background_texture;
 
+	static bool menu_active;
+
 	// private functions
+
+	//
+
+	void prepareStrap(sf::Color color, sf::Vector2f size)
+	{
+		strap.setFillColor(color);
+		strap.setSize(size);
+	}
+	void drawStrap()
+	{
+		_window->draw(strap);
+	}
+
+	//
 
 	void prepareTexts()
 	{
@@ -124,7 +146,8 @@ class Window
 		switch (algorithm_name)
 		{
 		case Algorithms::bubble_sort:
-			std::cout << "bubble sort\n";
+			bubbleSort();
+			menu_active = false;
 			break;
 		case Algorithms::selection_sort:
 			std::cout << "selection sort\n";
@@ -142,6 +165,9 @@ class Window
 			std::cout << "counting sort\n";
 			break;
 		}
+
+		std::cout << menu_active << "\n";
+		//menu_active = true;
 	}
 	void frameChanger(Algorithms algorithm_name)
 	{
@@ -163,6 +189,12 @@ class Window
 			_square_frame.setOrigin(0, 0);
 			_square_frame.setScale(1, 1);
 		}
+	}
+	void bubbleSort()
+	{
+		_window->clear();
+		prepareStrap(sf::Color::Yellow, sf::Vector2f(10,200));
+		drawStrap();
 	}
 
 public:
@@ -196,6 +228,13 @@ public:
 		drawMenuBackground();
 		drawHoverFrames();
 		drawMenuTexts();
+	}
+	void draw()
+	{
+		if (menu_active)
+		{
+			drawMenu();
+		}
 	}
 	void clearSelf() { _window->clear(sf::Color::Blue); }
 	void drawSelf() { _window->display(); }

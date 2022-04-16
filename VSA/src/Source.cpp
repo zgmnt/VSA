@@ -18,9 +18,8 @@ int main()
         }
 
         window.clearSelf();
+        window.draw();
         window.updateMenu();
-        window.drawMenu();
-
         window.drawSelf();
     }
 

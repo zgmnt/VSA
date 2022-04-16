@@ -11,3 +11,4 @@ std::vector<sf::Text> Window::_algorithm_names;
 sf::Text Window::_algorithm_name;
 int Window::background_change_direction{ false };
 std::vector<std::pair<int, int>> Window::framesPos;
+bool Window::menu_active{ true };
