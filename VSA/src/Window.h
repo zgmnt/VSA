@@ -30,7 +30,11 @@ class Window
 	static sf::Text _algorithm_name;
 	static std::vector<sf::Text> _algorithm_names;
 	static std::vector<std::pair<int, int>> framesPos;
+	static std::vector<std::pair<int, int>> strapsPos;
+	static std::vector<std::pair<int, int>> strapsSizes;
 	static int background_change_direction;
+	static unsigned int straps_amount;
+	static unsigned int straps_width;
 
 	sf::RectangleShape _square_frame;
 
@@ -46,11 +50,7 @@ class Window
 
 	//
 
-	void prepareStrap(sf::Color color, sf::Vector2f size)
-	{
-		strap.setFillColor(color);
-		strap.setSize(size);
-	}
+
 	void drawStrap()
 	{
 		_window->draw(strap);
@@ -195,10 +195,36 @@ class Window
 			_square_frame.setScale(1, 1);
 		}
 	}
+	void generateStrapsValues()
+	{
+		// should be called once
+
+		strap.setFillColor(sf::Color::Yellow);
+		srand(time(NULL));
+		unsigned int sizeY; 
+
+		for (int i = 0; i < straps_amount; i++)
+		{
+			sizeY = rand() % (500 - 100 + 1) + 100;
+			strapsSizes.push_back(std::make_pair(straps_width, sizeY));
+		}
+
+	}
+	void drawStraps()
+	{
+		for (int i = 0; i < straps_amount; i++)
+		{
+			strap.setSize(sf::Vector2f(strapsSizes[i].first, strapsSizes[i].second));
+			strap.setPosition(sf::Vector2f(i * 15, _height - strapsSizes[i].second));
+			_window->draw(strap);
+		}
+	}
 	void bubbleSort()
 	{
 		algorithm_name_text.setString("Bubble Sort");
 		_window->draw(algorithm_name_text);
+		drawStraps();
+		
 	}
 	void selectionSort()
 	{
@@ -242,7 +268,7 @@ public:
 	}
 	void prepareAlgorithmsContents()
 	{
-		prepareStrap(sf::Color::Yellow, sf::Vector2f(10, 200));
+		generateStrapsValues();
 	}
 	void prepareContents()
 	{
@@ -271,8 +297,9 @@ public:
 		else
 		{
 			selectorAlgorithm();
+			drawStraps();
 		}
 	}
-	void clearSelf() { _window->clear(sf::Color::Blue); }
+	void clearSelf() { _window->clear(sf::Color::Black); }
 	void drawSelf() { _window->display(); }
 };
