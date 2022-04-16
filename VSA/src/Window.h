@@ -68,6 +68,7 @@ public:
 	}
 	void prepareMenuContents()
 	{
+		fillFramesPos();
 		prepareTexts();
 		prepareBackground();
 		_square_frame.setFillColor(sf::Color::Red);
@@ -106,40 +107,16 @@ public:
 	}
 	void prepareFramesForEachAlgorithms()
 	{
-		fillFramesPos();
-
-		// upper line
-		_square_frame.setPosition(framesPositionsX[0], framesPositionsY[0]);
-		_window->draw(_square_frame);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[1], framesPositionsY[1]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[2], framesPositionsY[2]);
-		frameScaleChanger();
-
-		// lower line
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[3], framesPositionsY[3]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[4], framesPositionsY[4]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[5], framesPositionsY[5]);
-		frameScaleChanger();
-
-		_window->draw(_square_frame);
-		_square_frame.setPosition(framesPositionsX[6], framesPositionsY[6]);
-		frameScaleChanger();
+		for (int i = 0; i<_algorithm_names.size(); i++)
+		{
+			_square_frame.setPosition(framesPositionsX[i], framesPositionsY[i]);
+			frameScaleChanger();
+			_window->draw(_square_frame);
+		}
 	}
 	void drawMenu()
 	{
+
 		drawMenuBackground();
 		prepareFramesForEachAlgorithms();
 		drawMenuTexts();
