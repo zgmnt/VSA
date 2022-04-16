@@ -51,11 +51,6 @@ class Window
 	//
 
 
-	void drawStrap()
-	{
-		_window->draw(strap);
-	}
-
 	//
 
 	void prepareTexts()
@@ -224,6 +219,18 @@ class Window
 		algorithm_name_text.setString("Bubble Sort");
 		_window->draw(algorithm_name_text);
 		drawStraps();
+
+
+		std::pair<int, int> pos;
+		for (int i = 0; i < straps_amount-1; i++)
+		{
+			if (strapsSizes[i].second < strapsSizes[i + 1].second)
+			{
+				pos = strapsSizes[i];
+				strapsSizes[i] = strapsSizes[i + 1];
+				strapsSizes[i + 1] = pos;
+			}
+		}
 		
 	}
 	void selectionSort()
