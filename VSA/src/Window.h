@@ -198,8 +198,7 @@ class Window
 		refreshUpdate();
 		number_of_moves.setString(std::to_string(moves));
 		updateSoredInfo();
-		
-		
+		movesUpdate();
 	}
 	void frameChanger(Algorithms algorithm_name)
 	{
@@ -268,6 +267,7 @@ class Window
 				else
 				{
 					sorted = true;
+
 				}
 			}
 		}
@@ -288,6 +288,7 @@ class Window
 				else
 				{
 					sorted = true;
+
 				}
 			}
 		}
@@ -308,17 +309,30 @@ class Window
 	}
 	void refreshUpdate()
 	{
+		
 		if (refresh_sprite.getGlobalBounds().contains((*_window).mapPixelToCoords(sf::Mouse::getPosition(*_window))))
 		{
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+
+				if (sort_on_wish)
+				{
+					sort_on_wish = false;
+				}
+				else
+				{
+					sort_on_wish = true;
+				}
 				Sleep(150);
-				sort_on_wish = true;
+
 				sorted = false;
 			}
 		}
 	}
-
+	void movesUpdate()
+	{
+		
+	}
 public:
 	Window(int width, int height) 
 	{ 
