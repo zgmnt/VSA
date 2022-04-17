@@ -28,6 +28,7 @@ class Window
 
 	static sf::Font menu_font;
 	static sf::Text _algorithm_name;
+	static sf::Text sorted_text;
 	static std::vector<sf::Text> _algorithm_names;
 	static std::vector<std::pair<int, int>> framesPos;
 	static std::vector<std::pair<int, int>> strapsPos;
@@ -46,6 +47,9 @@ class Window
 
 	sf::Font algorithms_font;
 	sf::Text algorithm_name_text;
+	sf::Text number_of_moves;
+
+	unsigned int moves;
 
 	// private functions
 
@@ -79,6 +83,19 @@ class Window
 		algorithm_name_text.setFont(algorithms_font);
 		algorithm_name_text.setCharacterSize(30);
 		algorithm_name_text.setFillColor(sf::Color::Yellow);
+
+		sorted_text.setFont(algorithms_font);
+		sorted_text.setCharacterSize(42);
+		sorted_text.setFillColor(sf::Color::Red);
+		sorted_text.setPosition(960, 40);
+
+
+		number_of_moves.setFont(algorithms_font);
+		number_of_moves.setCharacterSize(30);
+		number_of_moves.setFillColor(sf::Color::Magenta);
+		number_of_moves.setPosition(960, 90);
+		
+		
 
 	}
 	void prepareBackground()
@@ -174,8 +191,10 @@ class Window
 			//countingSort();
 			break;
 		}
-		_window->draw(algorithm_name_text);
-		drawStraps();
+
+		number_of_moves.setString(std::to_string(moves));
+		updateSoredInfo();
+		
 	}
 	void frameChanger(Algorithms algorithm_name)
 	{
@@ -232,20 +251,34 @@ class Window
 
 		for (int i = 0; i < straps_amount - 1; i++)
 		{
+			
 			if (strapsSizes[i].second < strapsSizes[i + 1].second)
 			{
+				moves++;
 				sorted = false;
 				pos = strapsSizes[i];
 				strapsSizes[i] = strapsSizes[i + 1];
 				strapsSizes[i + 1] = pos;
-
+				break;
 			}
 			else
 			{
 				sorted = true;
 			}
 		}
-
+	}
+	void updateSoredInfo()
+	{
+		if (sorted) 
+		{ 
+			sorted_text.setString("SORTED");
+			sorted_text.setFillColor(sf::Color::Green);
+		}
+		else 
+		{ 
+			sorted_text.setString("NOT SORTED");
+			sorted_text.setFillColor(sf::Color::Red);
+		}
 	}
 
 public:
@@ -293,6 +326,10 @@ public:
 		else
 		{
 			selectorAlgorithm();
+			drawStraps();
+			_window->draw(algorithm_name_text);
+			_window->draw(sorted_text);
+			_window->draw(number_of_moves);
 			drawStraps();
 		}
 	}
