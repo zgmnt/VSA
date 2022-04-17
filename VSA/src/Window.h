@@ -42,6 +42,9 @@ class Window
 	sf::Sprite menu_background_sprite;
 	sf::Texture menu_background_texture;
 
+	sf::Sprite refresh_sprite;
+	sf::Texture refresh_texture;
+
 	static bool menu_active;
 	static bool sorted;
 
@@ -52,11 +55,6 @@ class Window
 	unsigned int moves;
 
 	// private functions
-
-	//
-
-
-	//
 
 	void prepareTexts()
 	{
@@ -298,6 +296,14 @@ public:
 	void prepareAlgorithmsContents()
 	{
 		generateStrapsValues();
+		prepareRefreshIcon();
+	}
+	void prepareRefreshIcon()
+	{
+		refresh_texture.loadFromFile("img\\refresh.png");
+		refresh_sprite = sf::Sprite(refresh_texture);
+		refresh_sprite.setPosition(880, 45);
+		refresh_sprite.setScale(0.25, 0.25);
 	}
 	void prepareContents()
 	{
@@ -331,6 +337,7 @@ public:
 			_window->draw(sorted_text);
 			_window->draw(number_of_moves);
 			drawStraps();
+			_window->draw(refresh_sprite);
 		}
 	}
 	void clearSelf() { _window->clear(sf::Color::Black); }
