@@ -42,8 +42,12 @@ class Window
 	sf::Sprite menu_background_sprite;
 	sf::Texture menu_background_texture;
 
+	sf::Sprite refresh_sprite;
+	sf::Texture refresh_texture;
+
 	static bool menu_active;
 	static bool sorted;
+	static bool sort_on_wish;
 
 	sf::Font algorithms_font;
 	sf::Text algorithm_name_text;
@@ -52,11 +56,6 @@ class Window
 	unsigned int moves;
 
 	// private functions
-
-	//
-
-
-	//
 
 	void prepareTexts()
 	{
@@ -164,36 +163,42 @@ class Window
 	void drawFrames() {_window->draw(_square_frame);}
 	void selectorAlgorithm()
 	{
-		switch (active_algorithm)
+		if (!sorted || sort_on_wish)
 		{
-		case Algorithms::bubble_sort:
-			algorithm_name_text.setString("Bubble Sort");
-			bubbleSort();
-			break;
-		case Algorithms::selection_sort:
-			algorithm_name_text.setString("Selection Sort");
-			//selectionSort();
-			break;
-		case Algorithms::insertion_sort:
-			algorithm_name_text.setString("Insertion Sort");
-			//insertionSort();
-			break;
-		case Algorithms::quick_sort:
-			algorithm_name_text.setString("Quick Sort");
-			//quickSort();
-			break;
-		case Algorithms::merge_sort:
-			algorithm_name_text.setString("Merge Sort");
-			//mergeSort();
-			break;
-		case Algorithms::counting_sort:
-			algorithm_name_text.setString("Counting Sort");
-			//countingSort();
-			break;
-		}
+			switch (active_algorithm)
+			{
+			case Algorithms::bubble_sort:
+				algorithm_name_text.setString("Bubble Sort");
+				bubbleSort();
+				break;
+			case Algorithms::selection_sort:
+				algorithm_name_text.setString("Selection Sort");
+				//selectionSort();
+				break;
+			case Algorithms::insertion_sort:
+				algorithm_name_text.setString("Insertion Sort");
+				//insertionSort();
+				break;
+			case Algorithms::quick_sort:
+				algorithm_name_text.setString("Quick Sort");
+				//quickSort();
+				break;
+			case Algorithms::merge_sort:
+				algorithm_name_text.setString("Merge Sort");
+				//mergeSort();
+				break;
+			case Algorithms::counting_sort:
+				algorithm_name_text.setString("Counting Sort");
+				//countingSort();
+				break;
+			}
 
+		}
+		
+		refreshUpdate();
 		number_of_moves.setString(std::to_string(moves));
 		updateSoredInfo();
+		
 		
 	}
 	void frameChanger(Algorithms algorithm_name)
@@ -245,27 +250,48 @@ class Window
 	void bubbleSort()
 	{
 		
-		std::cout << sorted << std::endl;
-
 		std::pair<int, int> pos;
-
-		for (int i = 0; i < straps_amount - 1; i++)
+		if (sort_on_wish)
 		{
-			
-			if (strapsSizes[i].second < strapsSizes[i + 1].second)
+			for (int i = 0; i < straps_amount - 1; i++)
 			{
-				moves++;
-				sorted = false;
-				pos = strapsSizes[i];
-				strapsSizes[i] = strapsSizes[i + 1];
-				strapsSizes[i + 1] = pos;
-				break;
-			}
-			else
-			{
-				sorted = true;
+
+				if (strapsSizes[i].second > strapsSizes[i + 1].second)
+				{
+					moves++;
+					sorted = false;
+					pos = strapsSizes[i];
+					strapsSizes[i] = strapsSizes[i + 1];
+					strapsSizes[i + 1] = pos;
+					break;
+				}
+				else
+				{
+					sorted = true;
+				}
 			}
 		}
+		else
+		{
+			for (int i = 0; i < straps_amount - 1; i++)
+			{
+
+				if (strapsSizes[i].second < strapsSizes[i + 1].second)
+				{
+					moves++;
+					sorted = false;
+					pos = strapsSizes[i];
+					strapsSizes[i] = strapsSizes[i + 1];
+					strapsSizes[i + 1] = pos;
+					break;
+				}
+				else
+				{
+					sorted = true;
+				}
+			}
+		}
+		
 	}
 	void updateSoredInfo()
 	{
@@ -278,6 +304,18 @@ class Window
 		{ 
 			sorted_text.setString("NOT SORTED");
 			sorted_text.setFillColor(sf::Color::Red);
+		}
+	}
+	void refreshUpdate()
+	{
+		if (refresh_sprite.getGlobalBounds().contains((*_window).mapPixelToCoords(sf::Mouse::getPosition(*_window))))
+		{
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				Sleep(150);
+				sort_on_wish = true;
+				sorted = false;
+			}
 		}
 	}
 
@@ -298,6 +336,14 @@ public:
 	void prepareAlgorithmsContents()
 	{
 		generateStrapsValues();
+		prepareRefreshIcon();
+	}
+	void prepareRefreshIcon()
+	{
+		refresh_texture.loadFromFile("img\\refresh.png");
+		refresh_sprite = sf::Sprite(refresh_texture);
+		refresh_sprite.setPosition(880, 45);
+		refresh_sprite.setScale(0.25, 0.25);
 	}
 	void prepareContents()
 	{
@@ -331,6 +377,7 @@ public:
 			_window->draw(sorted_text);
 			_window->draw(number_of_moves);
 			drawStraps();
+			_window->draw(refresh_sprite);
 		}
 	}
 	void clearSelf() { _window->clear(sf::Color::Black); }
