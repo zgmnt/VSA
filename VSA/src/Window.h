@@ -173,11 +173,11 @@ class Window
 				break;
 			case Algorithms::selection_sort:
 				algorithm_name_text.setString("Selection Sort");
-				//selectionSort();
+				selectionSort();
 				break;
 			case Algorithms::insertion_sort:
 				algorithm_name_text.setString("Insertion Sort");
-				//insertionSort();
+				insertionSort();
 				break;
 			case Algorithms::quick_sort:
 				algorithm_name_text.setString("Quick Sort");
@@ -245,6 +245,65 @@ class Window
 			strap.setPosition(sf::Vector2f(i * 15, _height - strapsSizes[i].second));
 			_window->draw(strap);
 		}
+	}
+	void insertionSort()
+	{
+		std::pair<int, int> key;
+		int j;
+		for (int i = 1; i < straps_amount; i++)
+		{
+			key = strapsSizes[i];
+			j = i - 1;
+
+			while (j >= 0 && strapsSizes[j] > key)
+			{
+				strapsSizes[j + 1] = strapsSizes[j];
+				j = j - 1;
+				break;
+			}
+			strapsSizes[j + 1] = key;
+
+		}
+	}
+	void selectionSort()
+	{
+		std::pair<int, int> pos;
+		if (sort_on_wish)
+		{
+			for (int i = 0; i < straps_amount; i++)
+			{
+				for (int j = 0; j < straps_amount; j++)
+				{
+					if (strapsSizes[i].second < strapsSizes[j].second)
+					{
+						//swap
+						pos = strapsSizes[i];
+						strapsSizes[i] = strapsSizes[j];
+						strapsSizes[j] = pos;
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < straps_amount; i++)
+			{
+				for (int j = 0; j < straps_amount; j++)
+				{
+					if (strapsSizes[i].second > strapsSizes[j].second)
+					{
+						//swap
+						pos = strapsSizes[i];
+						strapsSizes[i] = strapsSizes[j];
+						strapsSizes[j] = pos;
+						break;
+					}
+				}
+			}
+		}
+
+		
 	}
 	void bubbleSort()
 	{
