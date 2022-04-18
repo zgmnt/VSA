@@ -177,7 +177,7 @@ class Window
 				break;
 			case Algorithms::insertion_sort:
 				algorithm_name_text.setString("Insertion Sort");
-				//insertionSort();
+				insertionSort();
 				break;
 			case Algorithms::quick_sort:
 				algorithm_name_text.setString("Quick Sort");
@@ -244,6 +244,25 @@ class Window
 			strap.setSize(sf::Vector2f(strapsSizes[i].first, strapsSizes[i].second));
 			strap.setPosition(sf::Vector2f(i * 15, _height - strapsSizes[i].second));
 			_window->draw(strap);
+		}
+	}
+	void insertionSort()
+	{
+		std::pair<int, int> key;
+		int j;
+		for (int i = 1; i < straps_amount; i++)
+		{
+			key = strapsSizes[i];
+			j = i - 1;
+
+			while (j >= 0 && strapsSizes[j] > key)
+			{
+				strapsSizes[j + 1] = strapsSizes[j];
+				j = j - 1;
+				break;
+			}
+			strapsSizes[j + 1] = key;
+
 		}
 	}
 	void selectionSort()
