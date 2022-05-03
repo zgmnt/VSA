@@ -174,7 +174,6 @@ class Window
 		refreshUpdate();
 		number_of_moves.setString(std::to_string(moves));
 		updateSoredInfo();
-		movesUpdate();
 	}
 	void frameChanger(Algorithms algorithm_name)
 	{
@@ -226,20 +225,23 @@ class Window
 	{
 		std::pair<int, int> key;
 		int j;
-		for (int i = 1; i < straps_amount; i++)
-		{
-			key = strapsSizes[i];
-			j = i - 1;
 
-			while (j >= 0 && strapsSizes[j] > key)
+			for (int i = 1; i < straps_amount; i++)
 			{
-				strapsSizes[j + 1] = strapsSizes[j];
-				j = j - 1;
-				break;
-			}
-			strapsSizes[j + 1] = key;
+				key = strapsSizes[i];
+				j = i - 1;
+				
+				while (j >= 0 && strapsSizes[j] > key)
+				{
+					strapsSizes[j + 1] = strapsSizes[j];
+					j = j - 1;
+					moves++;
+					sorted = false;
+					break;
+				}
+				strapsSizes[j + 1] = key;
 
-		}
+			}
 	}
 	void selectionSort()
 	{
@@ -253,10 +255,17 @@ class Window
 					if (strapsSizes[i].second < strapsSizes[j].second)
 					{
 						//swap
+						sorted = false;
+						moves++;
 						pos = strapsSizes[i];
 						strapsSizes[i] = strapsSizes[j];
 						strapsSizes[j] = pos;
 						break;
+					}
+					else
+					{
+						sorted = true;
+
 					}
 				}
 			}
@@ -270,10 +279,17 @@ class Window
 					if (strapsSizes[i].second > strapsSizes[j].second)
 					{
 						//swap
+						sorted = false;
+						moves++;
 						pos = strapsSizes[i];
 						strapsSizes[i] = strapsSizes[j];
 						strapsSizes[j] = pos;
 						break;
+					}
+					else
+					{
+						sorted = true;
+
 					}
 				}
 			}
@@ -349,10 +365,11 @@ class Window
 		{
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-
+				movesReset();
 				if (sort_on_wish)
 				{
 					sort_on_wish = false;
+					
 				}
 				else
 				{
@@ -364,9 +381,9 @@ class Window
 			}
 		}
 	}
-	void movesUpdate()
+	void movesReset()
 	{
-		
+		moves = 0;
 	}
 public:
 	Window(int width, int height) 
@@ -377,7 +394,7 @@ public:
 	{
 		if (_window == NULL)
 		{
-			_window = new sf::RenderWindow(sf::VideoMode(_width, _height), "SFML works!");
+			_window = new sf::RenderWindow(sf::VideoMode(_width, _height), "VSA Zygmunt Latyszewicz");
 		}
 
 		return _window;
