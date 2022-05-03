@@ -98,19 +98,13 @@ class Window
 	}
 	void fillFramesPos()
 	{
-		std::pair<int, int > pos1 = std::make_pair(50, 83);
-		std::pair<int, int > pos2 = std::make_pair(450, 83);
-		std::pair<int, int > pos3 = std::make_pair(850, 83);
-		std::pair<int, int > pos4 = std::make_pair(50, 416);
-		std::pair<int, int > pos5 = std::make_pair(450, 416);
-		std::pair<int, int > pos6 = std::make_pair(850, 416);
+		std::pair<int, int > pos1 = std::make_pair(50, 250);
+		std::pair<int, int > pos2 = std::make_pair(450, 250);
+		std::pair<int, int > pos3 = std::make_pair(850, 250);
 
 		framesPos.push_back(pos1);
 		framesPos.push_back(pos2);
 		framesPos.push_back(pos3);
-		framesPos.push_back(pos4);
-		framesPos.push_back(pos5);
-		framesPos.push_back(pos6);
 	}
 	void prepareFrame()
 	{
