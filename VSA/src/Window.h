@@ -7,7 +7,7 @@
 
 enum class Algorithms
 {
-	bubble_sort, selection_sort, insertion_sort, quick_sort, merge_sort, counting_sort
+	bubble_sort, selection_sort, insertion_sort
 };
 
 class Window
@@ -72,12 +72,6 @@ class Window
 		_algorithm_names.push_back(_algorithm_name);
 		_algorithm_name.setString("insertion sort");
 		_algorithm_names.push_back(_algorithm_name);
-		_algorithm_name.setString("quick sort");
-		_algorithm_names.push_back(_algorithm_name);
-		_algorithm_name.setString("merge sort");
-		_algorithm_names.push_back(_algorithm_name);
-		_algorithm_name.setString("counting sort");
-		_algorithm_names.push_back(_algorithm_name);
 
 		algorithm_name_text.setFont(algorithms_font);
 		algorithm_name_text.setCharacterSize(30);
@@ -104,19 +98,13 @@ class Window
 	}
 	void fillFramesPos()
 	{
-		std::pair<int, int > pos1 = std::make_pair(50, 83);
-		std::pair<int, int > pos2 = std::make_pair(450, 83);
-		std::pair<int, int > pos3 = std::make_pair(850, 83);
-		std::pair<int, int > pos4 = std::make_pair(50, 416);
-		std::pair<int, int > pos5 = std::make_pair(450, 416);
-		std::pair<int, int > pos6 = std::make_pair(850, 416);
+		std::pair<int, int > pos1 = std::make_pair(50, 250);
+		std::pair<int, int > pos2 = std::make_pair(450, 250);
+		std::pair<int, int > pos3 = std::make_pair(850, 250);
 
 		framesPos.push_back(pos1);
 		framesPos.push_back(pos2);
 		framesPos.push_back(pos3);
-		framesPos.push_back(pos4);
-		framesPos.push_back(pos5);
-		framesPos.push_back(pos6);
 	}
 	void prepareFrame()
 	{
@@ -178,18 +166,6 @@ class Window
 			case Algorithms::insertion_sort:
 				algorithm_name_text.setString("Insertion Sort");
 				insertionSort();
-				break;
-			case Algorithms::quick_sort:
-				algorithm_name_text.setString("Quick Sort");
-				//quickSort();
-				break;
-			case Algorithms::merge_sort:
-				algorithm_name_text.setString("Merge Sort");
-				//mergeSort();
-				break;
-			case Algorithms::counting_sort:
-				algorithm_name_text.setString("Counting Sort");
-				//countingSort();
 				break;
 			}
 
@@ -445,7 +421,6 @@ public:
 		else
 		{
 			selectorAlgorithm();
-			drawStraps();
 			_window->draw(algorithm_name_text);
 			_window->draw(sorted_text);
 			_window->draw(number_of_moves);
