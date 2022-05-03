@@ -4,7 +4,7 @@
 int main()
 {
     Window window(1250,750);
-    Window::getWindow()->setFramerateLimit(5);
+    Window::getWindow()->setFramerateLimit(25);
 
     window.prepareContents();
     window.prepareAlgorithmsContents();
